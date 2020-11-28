@@ -10,9 +10,13 @@ I'm uploading this here in case someone smarter than me sees this and wants to s
 my limited knowledge on GPGPU programming I have not been able to draw anything using this method. I tried to follow the paper as precisely as I could.
 
 The important scripts are:
+
 ComputeInstance.cs (Responsible for setting everything up and making a commandbuffer to dispatch the computeshaders)
+
 CaseCompute.compute (Figures out the marching cubes case number)
+
 VertexCreationShader.compute (Creates vertices and saves their indices to a 3d texture for the next step)
+
 VertexSharingShader.compute (Creates the final indices based on the last step)
 
 Recommended unity version 2019.3 or above.
