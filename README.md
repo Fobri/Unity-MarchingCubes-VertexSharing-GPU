@@ -19,6 +19,6 @@ VertexCreationShader.compute (Creates vertices and saves their indices to a 3d t
 
 VertexSharingShader.compute (Creates the final indices based on the last step)
 
-Recommended unity version 2019.3 or above.
+Recommended unity version 2019.3 or above. And the rendering pipeline is URP because I wanted to make a custom renderer feature to render the terrain.
 
 The code is terrible, not documented at all and makes no sense, but here it is.
