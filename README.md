@@ -1,5 +1,5 @@
 # Unity-MarchingCubes-VertexSharing-GPU
-THIS DOES NOT WORK AT IT'S CURRENT STATE
+THIS DOES NOT WORK AT ITS CURRENT STATE
 
 This is the result of my countless hours of trying to implement runtime mesh generation on the gpu with vertex sharing based on this paper:
 https://www.diva-portal.org/smash/get/diva2:846354/FULLTEXT01.pdf
