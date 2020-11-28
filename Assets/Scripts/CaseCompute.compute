@@ -1,0 +1,58 @@
+﻿#pragma kernel CaseCompute
+
+uniform StructuredBuffer<float> _noiseMap;
+uniform float _isoLevel;
+uniform int _gridSize;
+
+RWStructuredBuffer<uint> voxelIDs;
+
+int GetIndex(int3 pos)
+{
+    return pos.z + pos.y * _gridSize + pos.x * _gridSize * _gridSize;
+
+}
+
+float SampleData(int3 pos)
+{
+    return _noiseMap.Load(GetIndex(pos));
+}
+
+[numthreads(8,8,8)]
+void CaseCompute (uint3 threadId : SV_DispatchThreadID)
+{
+    float val[8] =
+    {
+        SampleData(threadId + int3(0, 0, 1)),
+		SampleData(threadId + int3(1, 0, 1)),
+		SampleData(threadId + int3(1, 0, 0)),
+		SampleData(threadId + int3(0, 0, 0)),
+		SampleData(threadId + int3(0, 1, 1)),
+		SampleData(threadId + int3(1, 1, 1)),
+		SampleData(threadId + int3(1, 1, 0)),
+		SampleData(threadId + int3(0, 1, 0))
+    };
+
+    int caseNumber = 0;
+    if (val[0] < _isoLevel) caseNumber |= 1;
+	if (val[1] < _isoLevel) caseNumber |= 2;
+    if (val[2] < _isoLevel) caseNumber |= 4;
+    if (val[3] < _isoLevel) caseNumber |= 8;
+	if (val[4] < _isoLevel) caseNumber |= 16;
+	if (val[5] < _isoLevel) caseNumber |= 32;
+	if (val[6] < _isoLevel) caseNumber |= 64;
+    if (val[7] < _isoLevel) caseNumber |= 128;
+    
+    if (caseNumber > 0 && caseNumber < 255)
+    {
+        
+        uint ID = (threadId.z << 24) |
+                    (threadId.y << 16) |
+                    (threadId.x << 8) |
+                    (caseNumber);
+        
+        uint index = voxelIDs.IncrementCounter();
+        voxelIDs[index] = ID;
+
+    }
+
+}
